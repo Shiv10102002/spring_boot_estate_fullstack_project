@@ -1,0 +1,79 @@
+# ============================================================
+# ROOT .gitignore — SpringBoot Estate (monorepo)
+# ============================================================
+
+# ───────────────────────────────────────────────
+# OS & System files
+# ───────────────────────────────────────────────
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# ───────────────────────────────────────────────
+# IDE & Editor
+# ───────────────────────────────────────────────
+.idea/
+*.iws
+*.iml
+*.ipr
+.vscode/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+*.swp
+*.swo
+*~
+
+# ───────────────────────────────────────────────
+# ======  BACKEND (Spring Boot / Maven)  ========
+# ───────────────────────────────────────────────
+
+# Maven build output
+springboot-estate/target/
+springboot-estate/.mvn/wrapper/maven-wrapper.jar
+
+# Spring local / secret properties
+springboot-estate/src/main/resources/application-local.properties
+springboot-estate/src/main/resources/application-*.properties
+!springboot-estate/src/main/resources/application.properties
+
+# Log files
+springboot-estate/*.log
+springboot-estate/logs/
+
+# ───────────────────────────────────────────────
+# ========  FRONTEND (React / Vite / Node)  ======
+# ───────────────────────────────────────────────
+
+# Dependencies
+client/node_modules/
+
+# Build output
+client/dist/
+client/dist-ssr/
+
+# Environment variables — NEVER commit real secrets
+client/.env
+client/.env.*
+!client/.env.example
+
+# Vite cache
+client/.vite/
+
+# ───────────────────────────────────────────────
+# Logs (any location)
+# ───────────────────────────────────────────────
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
