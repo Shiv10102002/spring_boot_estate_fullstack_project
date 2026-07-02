@@ -28,6 +28,6 @@ target/
 build/
 !**/src/main/**/build/
 !**/src/test/**/build/
-
+SPRINGBOOT_MIGRATION_PLAN.md
 ### VS Code ###
 .vscode/

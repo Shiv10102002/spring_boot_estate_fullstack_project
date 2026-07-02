@@ -3,22 +3,29 @@ package com.shiv.springboot_estate.services;
 import com.shiv.springboot_estate.exceptions.AppException;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
-import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 
 @Service
-@RequiredArgsConstructor
 public class EmailService {
 
     private final JavaMailSender mailSender;
+    private final String fromEmail;
+
+    public EmailService(JavaMailSender mailSender,
+                        @Value("${spring.mail.username}") String fromEmail) {
+        this.mailSender = mailSender;
+        this.fromEmail = fromEmail;
+    }
 
     public void sendPasswordResetEmail(String toEmail, String username, String resetUrl) {
         try {
             MimeMessage message = mailSender.createMimeMessage();
             MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
 
+            helper.setFrom(fromEmail);
             helper.setTo(toEmail);
             helper.setSubject("ShivEstate — Password Reset Request");
             helper.setText(buildHtmlEmail(username, resetUrl), true);

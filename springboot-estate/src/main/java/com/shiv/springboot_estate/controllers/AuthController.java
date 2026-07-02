@@ -8,6 +8,8 @@ import com.shiv.springboot_estate.dto.SigninRequest;
 import com.shiv.springboot_estate.dto.SignupRequest;
 import com.shiv.springboot_estate.models.User;
 import com.shiv.springboot_estate.services.AuthService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -18,10 +20,12 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/api/v1/auth")
 @RequiredArgsConstructor
+@Tag(name = "Authentication", description = "Endpoints for user registration, login, Google OAuth, and password management")
 public class AuthController {
 
     private final AuthService authService;
 
+    @Operation(summary = "Register a new user", description = "Creates a new user account with username, email, and password.")
     @PostMapping("/signup")
     public ResponseEntity<ApiResponse<Void>> signup(@Valid @RequestBody SignupRequest req) {
         authService.signup(req);
@@ -29,6 +33,7 @@ public class AuthController {
                 .body(ApiResponse.success(201, "User created successfully"));
     }
 
+    @Operation(summary = "Sign in", description = "Authenticates the user and sets a JWT cookie in the response.")
     @PostMapping("/signin")
     public ResponseEntity<ApiResponse<User>> signin(@Valid @RequestBody SigninRequest req,
                                                     HttpServletResponse response) {
@@ -36,6 +41,7 @@ public class AuthController {
         return ResponseEntity.ok(ApiResponse.success(200, "Signed in successfully", user));
     }
 
+    @Operation(summary = "Google OAuth sign-in", description = "Authenticates or registers a user via Google OAuth token.")
     @PostMapping("/google")
     public ResponseEntity<ApiResponse<User>> google(@Valid @RequestBody GoogleAuthRequest req,
                                                     HttpServletResponse response) {
@@ -43,12 +49,14 @@ public class AuthController {
         return ResponseEntity.ok(ApiResponse.success(200, "Signed in with Google", user));
     }
 
+    @Operation(summary = "Sign out", description = "Clears the JWT cookie and signs the user out.")
     @GetMapping("/signout")
     public ResponseEntity<ApiResponse<Void>> signout(HttpServletResponse response) {
         authService.signout(response);
         return ResponseEntity.ok(ApiResponse.success(200, "User has been logged out"));
     }
 
+    @Operation(summary = "Forgot password", description = "Sends a password-reset link to the provided email address if an account exists.")
     @PostMapping("/forgot-password")
     public ResponseEntity<ApiResponse<Void>> forgotPassword(@Valid @RequestBody ForgotPasswordRequest req) {
         authService.forgotPassword(req);
@@ -57,6 +65,7 @@ public class AuthController {
                 "If an account with that email exists, a reset link has been sent."));
     }
 
+    @Operation(summary = "Reset password", description = "Resets the user's password using the token received via email.")
     @PostMapping("/reset-password")
     public ResponseEntity<ApiResponse<Void>> resetPassword(@Valid @RequestBody ResetPasswordRequest req) {
         authService.resetPassword(req);
